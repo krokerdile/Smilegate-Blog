@@ -1,0 +1,26 @@
+{
+  "posts": [
+    {
+      "title": "ㄷㄹㅇㄴㄹ",
+      "body": "ㄴㅇㄹㄴㅇㄹ",
+      "id": 1
+    },
+    {
+      "title": "dasdasdad",
+      "body": "asdadsasdasd",
+      "id": 2
+    }
+  ],
+  "comments": [
+    {
+      "comment": "sadasd",
+      "postId": "2",
+      "id": 1
+    },
+    {
+      "comment": "asdadasd",
+      "postId": "2",
+      "id": 2
+    }
+  ]
+}

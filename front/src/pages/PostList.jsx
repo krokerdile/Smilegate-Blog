@@ -2,14 +2,21 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Comment = (props) => {
+const PostList = () => {
     const [data, setData] = useState(null);
-    const [comment, setComment] = useState('');
     const navigate = useNavigate();
+
+    const LoadDetail = (id) => {
+        navigate('/post/' + id);
+    };
+
+    const LoadEdit = (id) => {
+        navigate('/edit/' + id);
+    };
+
     const RemoveFunction = async (e) => {
-        console.log(e);
         if (window.confirm('Do you want to remove')) {
-            // fetch('http://localhost:8080/comments/' + id, {
+            // fetch('http://localhost:8080/posts/' + id, {
             //     method: 'DELETE',
             // })
             //     .then((res) => {
@@ -22,7 +29,7 @@ const Comment = (props) => {
             try {
                 const resp = await axios.get(
                     // 'http://localhost:8080/comments',
-                    'http://localhost:8000/comment/delete/' + e.target.id,
+                    'http://localhost:8000/post/delete/' + e.target.id,
                     {
                         headers: { 'Content-Type': 'application/json' },
                     }
@@ -37,76 +44,58 @@ const Comment = (props) => {
             }
         }
     };
-    const postId = props['postId'];
+
     const fetchData = async () => {
-        const { data } = await axios.get(
-            // 'http://localhost:8080/comments?postId=' + commentId
-            'http://localhost:8000/comment/' + postId
-        );
-        // console.log(data);
+        const { data } = await axios.get('http://localhost:8000/post');
+        console.log(data);
         setData(data);
     };
     useEffect(() => {
         fetchData();
-    }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const data = { body: comment, postId: props['postId'] };
         console.log(data);
-        try {
-            const resp = await axios.post(
-                // 'http://localhost:8080/comments',
-                'http://localhost:8000/commentcreate',
-                data,
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                }
-            );
-            fetchData();
-            console.log(data);
-            console.log(resp);
-        } catch (err) {
-            let status = err.response?.status;
-            console.log(status);
-            console.log(err);
-        }
-    };
+    }, []);
     return (
         <>
-            {/* <Link to="/write">
+            <Link to="/write">
                 <button>Add new</button>
-            </Link> */}
+            </Link>
 
             <table>
                 <thead>
                     <tr>
                         <td>
-                            <h1>Comment</h1>
-                            <form onSubmit={handleSubmit}>
-                                <label>Title</label>
-                                <label>Body</label>
-                                <input
-                                    required
-                                    value={comment}
-                                    onChange={(e) => setComment(e.target.value)}
-                                ></input>
-                                <button type="submit">Save</button>
-                            </form>
+                            <h1>id</h1>
+                        </td>
+                        <td>
+                            <h1>title</h1>
                         </td>
                     </tr>
                 </thead>
                 <tbody>
                     {data &&
                         data.map((item) => (
-                            <tr key={item.commentId}>
-                                <td>{item.body}</td>
+                            <tr key={item.postId}>
+                                <td>{item.title}</td>
                                 <td>
                                     <button
+                                        onClick={() => {
+                                            LoadEdit(item.postId);
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
                                         onClick={RemoveFunction}
-                                        id={item.commentId}
+                                        id={item.postId}
                                     >
                                         Remove
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            LoadDetail(item.postId);
+                                        }}
+                                    >
+                                        Details
                                     </button>
                                 </td>
                             </tr>
@@ -117,4 +106,4 @@ const Comment = (props) => {
     );
 };
 
-export default Comment;
+export default PostList;

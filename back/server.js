@@ -1,27 +1,119 @@
 const express = require('express');
 const app = express();
-const port = 3000; // port 번호 설정
+const mysql = require('mysql');
+const bodyParser = require('body-parser');
+const { urlencoded } = require('body-parser');
+const PORT = process.env.port || 8000;
+const cors = require('cors');
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'q1w2e3r4!',
+    database: 'my_db',
+});
+
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.listen(PORT, () => {
+    console.log(`running on port ${PORT}`);
+});
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send('Root');
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+//전체 blog_content 불러오기
+app.get('/post', (req, res) => {
+    const sqlQuery = 'SELECT * FROM blog_content;';
+    db.query(sqlQuery, (err, result) => {
+        res.send(result);
+    });
 });
 
-const mysql = require('mysql');
-
-// sql 연동
-const db = mysql.createConnection({
-    user: 'root',
-    host: 'localhost',
-    password: 'Gusdn3648!',
-    database: 'condb',
+//특정 게시물 데이터 가져오기
+app.get('/post/:no', (req, res) => {
+    db.query(
+        `SELECT * from blog_content where postId=${req.params.no}`,
+        (error, rows) => {
+            if (error) console.log(error);
+            console.log('Post: ', rows);
+            res.send(rows);
+        }
+    );
 });
 
-// 잘 연동 되었는지 확인
-db.connect(function (err) {
-    if (err) throw err;
-    console.log('DB is Connected!');
+//특정 게시물 삭제
+app.get('/post/delete/:no', (req, res) => {
+    db.query(
+        `DELETE FROM blog_content WHERE postId=${req.params.no}`,
+        (error, rows) => {
+            if (error) console.log(error);
+            console.log('Post: ', rows);
+            res.send(rows);
+        }
+    );
+});
+
+//특정 게시물 수정하기
+app.post('/post/edit/', (req, res) => {
+    db.query(
+        `UPDATE blog_content SET title = "${req.body.title}", body="${req.body.body}" WHERE postId=${req.body.postId}`,
+        (error, rows) => {
+            if (error) console.log(error);
+            console.log('Post: ', rows);
+            res.send([rows, req.body]);
+        }
+    );
+});
+//특정 게시물 생성하기
+app.post('/create', (req, res) => {
+    console.log(req.body);
+    db.query(
+        `INSERT INTO blog_content(title,body) values('${req.body.title}','${req.body.body}') `,
+        (error, rows) => {
+            if (error) console.log(error);
+            console.log('edit: ', rows);
+            res.send(rows);
+        }
+    );
+});
+//특정 댓글 지우기
+app.get('/comment/delete/:no', (req, res) => {
+    db.query(
+        `DELETE FROM comment WHERE commentId=${req.params.no}`,
+        (error, rows) => {
+            if (error) console.log(error);
+            console.log('Post: ', rows);
+            res.send(rows);
+        }
+    );
+});
+//특정 게시물의 댓글 가져오기
+app.get('/comment/:no', (req, res) => {
+    db.query(
+        `SELECT * from comment where postId=${req.params.no}`,
+        (error, rows) => {
+            if (error) console.log(error);
+            console.log('Post: ', rows);
+            res.send(rows);
+        }
+    );
+});
+//특정 게시물의 댓글 달기
+app.post('/commentcreate', (req, res) => {
+    db.query(
+        `insert into comment(body,postId) values("${req.body.body}",${req.body.postId})`,
+        (error, rows) => {
+            if (error) console.log(error);
+            console.log('edit: ', rows);
+            res.send(rows);
+        }
+    );
+});
+
+app.listen(app.get('port'), () => {
+    console.log('Express server listening on port ' + app.get('port'));
 });

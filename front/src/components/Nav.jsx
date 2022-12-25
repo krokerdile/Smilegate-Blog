@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React from 'react';
 import Responsive from './Responsive';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -42,7 +43,7 @@ const Spacer = styled.div`
 const Nav = () => {
     const navigate = useNavigate();
     return (
-        <>
+        <React.Fragment>
             <HeaderBlock>
                 <Wrapper>
                     <Link className="link" to="/">
@@ -51,7 +52,9 @@ const Nav = () => {
                     <div className="right">
                         <Stack spacing={2} direction="row">
                             <Link className="link" to="/admin">
-                                <Button variant="outlined">Admin</Button>
+                                <Button variant="outlined">
+                                    관리자 페이지
+                                </Button>
                             </Link>
                             <Link className="link" to="/write">
                                 <Button variant="outlined">글 작성하기</Button>
@@ -61,7 +64,7 @@ const Nav = () => {
                 </Wrapper>
             </HeaderBlock>
             <Spacer />
-        </>
+        </React.Fragment>
     );
 };
 

@@ -74,87 +74,78 @@ const AdminPage = () => {
         console.log(data);
     }, []);
     return (
-        <>
-            <Responsive>
-                <br />
-                <br />
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 500 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>PostID</TableCell>
-                                <TableCell align="right">Title</TableCell>
-                                <TableCell align="right">글 보러가기</TableCell>
-                                <TableCell align="right">글 삭제하기</TableCell>
-                                <TableCell align="right">글 수정하기</TableCell>
-                                <TableCell align="right">댓글 비우기</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data &&
-                                data.map((item) => (
-                                    <TableRow
-                                        key={item.postId}
-                                        sx={{
-                                            '&:last-child td, &:last-child th':
-                                                {
-                                                    border: 0,
-                                                },
+        <Responsive>
+            <br />
+            <br />
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 500 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>PostID</TableCell>
+                            <TableCell align="right">Title</TableCell>
+                            <TableCell align="right">글 보러가기</TableCell>
+                            <TableCell align="right">글 삭제하기</TableCell>
+                            <TableCell align="right">글 수정하기</TableCell>
+                            <TableCell align="right">댓글 비우기</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data &&
+                            data.map((item) => (
+                                <TableRow
+                                    key={item.postId}
+                                    sx={{
+                                        '&:last-child td, &:last-child th': {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {item.postId}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {item.title}
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        onClick={() => {
+                                            LoadDetail(item.postId);
                                         }}
                                     >
-                                        <TableCell component="th" scope="row">
-                                            {item.postId}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {item.title}
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            onClick={() => {
-                                                LoadDetail(item.postId);
-                                            }}
-                                        >
-                                            <Button variant="outlined">
-                                                조회
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            onClick={() => {
-                                                RemoveFunction(item.postId);
-                                            }}
-                                        >
-                                            <Button variant="outlined">
-                                                삭제
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            onClick={() => {
-                                                LoadEdit(item.postId);
-                                            }}
-                                        >
-                                            <Button variant="outlined">
-                                                수정
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            onClick={() => {
-                                                RemoveComment(item.postId);
-                                            }}
-                                        >
-                                            <Button variant="outlined">
-                                                댓글삭제
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Responsive>
-        </>
+                                        <Button variant="outlined">조회</Button>
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        onClick={() => {
+                                            RemoveFunction(item.postId);
+                                        }}
+                                    >
+                                        <Button variant="outlined">삭제</Button>
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        onClick={() => {
+                                            LoadEdit(item.postId);
+                                        }}
+                                    >
+                                        <Button variant="outlined">수정</Button>
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        onClick={() => {
+                                            RemoveComment(item.postId);
+                                        }}
+                                    >
+                                        <Button variant="outlined">
+                                            댓글삭제
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Responsive>
     );
 };
 

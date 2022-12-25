@@ -95,68 +95,65 @@ const PostList = () => {
         console.log(control);
     };
     return (
-        <>
-            <Responsive>
-                <TableContainer component={Paper}>
-                    <br />
-                    <br />
+        <Responsive>
+            <TableContainer component={Paper}>
+                <br />
+                <br />
 
-                    <Stack
-                        alignItems="right"
-                        justifyContent="center"
-                        spacing={2}
-                        direction="row"
-                    >
-                        <Chip label="최신순 정렬" onClick={RecentTimeOrder} />
-                        <Chip label="오래된 순 정렬" onClick={OldTimeOrder} />
-                    </Stack>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>PostID</TableCell>
-                                <TableCell align="right">Title</TableCell>
-                                <TableCell align="right">글 작성시간</TableCell>
-                                <TableCell align="right">글 보러가기</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {control &&
-                                control.map((item) => (
-                                    <TableRow
-                                        key={item.postId}
-                                        sx={{
-                                            '&:last-child td, &:last-child th':
-                                                {
-                                                    border: 0,
-                                                },
+                <Stack
+                    alignItems="right"
+                    justifyContent="center"
+                    spacing={2}
+                    direction="row"
+                >
+                    <Chip label="최신순 정렬" onClick={RecentTimeOrder} />
+                    <Chip label="오래된 순 정렬" onClick={OldTimeOrder} />
+                </Stack>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>PostID</TableCell>
+                            <TableCell align="right">Title</TableCell>
+                            <TableCell align="right">글 작성시간</TableCell>
+                            <TableCell align="right">글 보러가기</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {control &&
+                            control.map((item) => (
+                                <TableRow
+                                    key={item.postId}
+                                    sx={{
+                                        '&:last-child td, &:last-child th': {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {item.title}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {item.title}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {item.time}
+                                    </TableCell>
+                                    <TableCell
+                                        align="right"
+                                        onClick={() => {
+                                            LoadDetail(item.postId);
                                         }}
                                     >
-                                        <TableCell component="th" scope="row">
-                                            {item.title}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {item.title}
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            {item.time}
-                                        </TableCell>
-                                        <TableCell
-                                            align="right"
-                                            onClick={() => {
-                                                LoadDetail(item.postId);
-                                            }}
-                                        >
-                                            <Button variant="outlined">
-                                                글 보러가기
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Responsive>
-        </>
+                                        <Button variant="outlined">
+                                            글 보러가기
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Responsive>
     );
 };
 

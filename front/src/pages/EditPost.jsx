@@ -80,44 +80,42 @@ const EditPost = () => {
         }
     };
     return (
-        <div>
-            <Responsive>
-                <h1>글 수정하기</h1>
-                <div>
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            fullWidth
-                            id="outlined-multiline-static"
-                            label="제목"
-                            multiline
-                            rows={2}
-                            name="title"
-                            required
-                            defaultValue={data.title}
-                            onChange={onChange}
-                        />
-                        <br />
-                        <br />
-                        <TextField
-                            fullWidth
-                            id="outlined-multiline-static"
-                            label="내용"
-                            multiline
-                            name="body"
-                            rows={6}
-                            required
-                            defaultValue={data.body}
-                            onChange={onChange}
-                        />
-                        <br />
-                        <br />
-                        <Button variant="contained" type="submit">
-                            수정하기
-                        </Button>
-                    </form>
-                </div>
-            </Responsive>
-        </div>
+        <Responsive>
+            <h1>글 수정하기</h1>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        fullWidth
+                        id="outlined-multiline-static"
+                        label="제목"
+                        multiline
+                        rows={2}
+                        name="title"
+                        required
+                        defaultValue={data.title}
+                        onChange={onChange}
+                    />
+                    <br />
+                    <br />
+                    <TextField
+                        fullWidth
+                        id="outlined-multiline-static"
+                        label="내용"
+                        multiline
+                        name="body"
+                        rows={6}
+                        required
+                        defaultValue={data.body}
+                        onChange={onChange}
+                    />
+                    <br />
+                    <br />
+                    <Button variant="contained" type="submit">
+                        수정하기
+                    </Button>
+                </form>
+            </div>
+        </Responsive>
     );
 };
 

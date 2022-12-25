@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Responsive from '../components/Responsive';
+import moment from 'moment';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,11 +12,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import { Chip } from '@mui/material';
+import Stack from '@mui/material/Stack';
 
 const PostList = () => {
     const [data, setData] = useState(null);
+    const [control, setControl] = useState(null);
     const navigate = useNavigate();
-
     const LoadDetail = (id) => {
         navigate('/post/' + id);
     };
@@ -49,15 +52,64 @@ const PostList = () => {
         const { data } = await axios.get('http://localhost:8000/post');
         console.log(data);
         setData(data);
+        setControl(data);
     };
     useEffect(() => {
         fetchData();
+        setControl(data);
         console.log(data);
     }, []);
+
+    const RecentTimeOrder = () => {
+        console.log(control);
+        setControl(
+            [...data].sort(function (a, b) {
+                const x = new moment(b.time).format('YYYY-MM-DD HH:mm:ss');
+                const y = new moment(a.time).format('YYYY-MM-DD HH:mm:ss');
+                if (x < y) {
+                    return -1;
+                }
+                if (x > y) {
+                    return 1;
+                }
+                return 0;
+            })
+        );
+        console.log(control);
+    };
+    const OldTimeOrder = () => {
+        console.log(control);
+        setControl(
+            [...data].sort(function (b, a) {
+                const x = new moment(b.time).format('YYYY-MM-DD HH:mm:ss');
+                const y = new moment(a.time).format('YYYY-MM-DD HH:mm:ss');
+                if (x < y) {
+                    return -1;
+                }
+                if (x > y) {
+                    return 1;
+                }
+                return 0;
+            })
+        );
+        console.log(control);
+    };
     return (
         <>
             <Responsive>
                 <TableContainer component={Paper}>
+                    <br />
+                    <br />
+
+                    <Stack
+                        alignItems="right"
+                        justifyContent="center"
+                        spacing={2}
+                        direction="row"
+                    >
+                        <Chip label="최신순 정렬" onClick={RecentTimeOrder} />
+                        <Chip label="오래된 순 정렬" onClick={OldTimeOrder} />
+                    </Stack>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
@@ -68,8 +120,8 @@ const PostList = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {data &&
-                                data.map((item) => (
+                            {control &&
+                                control.map((item) => (
                                     <TableRow
                                         key={item.postId}
                                         sx={{

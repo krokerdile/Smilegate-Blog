@@ -52,10 +52,6 @@ Smilegate Winter DevCamp 개인프로젝트(Blog)
 <aside>
 💡 프로젝트 계획 초반에 세웠던 내용
 
-# 기술 스택
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a085ba39-3074-4684-a210-fa6696b50472/Untitled.png)
-
 ## Frontend
 
 - React

@@ -72,7 +72,7 @@ app.post('/post/edit/', (req, res) => {
 app.post('/create', (req, res) => {
     console.log(req.body);
     db.query(
-        `INSERT INTO blog_content(title,body) values('${req.body.title}','${req.body.body}') `,
+        `INSERT INTO blog_content(title,body,time) values('${req.body.title}','${req.body.body}','${req.body.time}') `,
         (error, rows) => {
             if (error) console.log(error);
             console.log('edit: ', rows);
@@ -84,6 +84,17 @@ app.post('/create', (req, res) => {
 app.get('/comment/delete/:no', (req, res) => {
     db.query(
         `DELETE FROM comment WHERE commentId=${req.params.no}`,
+        (error, rows) => {
+            if (error) console.log(error);
+            console.log('Post: ', rows);
+            res.send(rows);
+        }
+    );
+});
+//특정 게시물의 댓글 다 지우기
+app.get('/comment/deleteAll/:no', (req, res) => {
+    db.query(
+        `DELETE FROM comment WHERE postId=${req.params.no}`,
         (error, rows) => {
             if (error) console.log(error);
             console.log('Post: ', rows);

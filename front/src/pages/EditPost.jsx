@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { TextField } from '@mui/material';
+import Responsive from '../components/Responsive';
+import Button from '@mui/material/Button';
 
 const EditPost = () => {
     const { empid } = useParams();
@@ -78,35 +81,42 @@ const EditPost = () => {
     };
     return (
         <div>
-            <h1>createPost</h1>
-            <div>
-                <h2>글 쓰기</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>Title</label>
-                    <input
-                        name="title"
-                        required
-                        defaultValue={data.title}
-                        // onChange={(e) => setTitle(e.target.value)}
-                        // onChange={(e) => {
-                        //     setTitle(e.target.value);
-                        // }}
-                        onChange={onChange}
-                    ></input>
-                    <label>Body</label>
-                    <input
-                        name="body"
-                        required
-                        defaultValue={data.body}
-                        // onChange={(e) => {
-                        //     setBody(e.target.value);
-                        // }}
-                        onChange={onChange}
-                    ></input>
-                    <button type="submit">Save</button>
-                </form>
-                <Link to="/">Back</Link>
-            </div>
+            <Responsive>
+                <h1>글 수정하기</h1>
+                <div>
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            fullWidth
+                            id="outlined-multiline-static"
+                            label="제목"
+                            multiline
+                            rows={2}
+                            name="title"
+                            required
+                            defaultValue={data.title}
+                            onChange={onChange}
+                        />
+                        <br />
+                        <br />
+                        <TextField
+                            fullWidth
+                            id="outlined-multiline-static"
+                            label="내용"
+                            multiline
+                            name="body"
+                            rows={6}
+                            required
+                            defaultValue={data.body}
+                            onChange={onChange}
+                        />
+                        <br />
+                        <br />
+                        <Button variant="contained" type="submit">
+                            수정하기
+                        </Button>
+                    </form>
+                </div>
+            </Responsive>
         </div>
     );
 };

@@ -2,6 +2,17 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
+import Responsive from '../components/Responsive';
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+
 const AdminPage = () => {
     const [data, setData] = useState(null);
     const navigate = useNavigate();
@@ -14,23 +25,48 @@ const AdminPage = () => {
         navigate('/edit/' + id);
     };
 
-    const RemoveFunction = (id) => {
+    const RemoveFunction = async (id) => {
         if (window.confirm('Do you want to remove')) {
-            fetch('http://localhost:8080/projects/' + id, {
-                method: 'DELETE',
-            })
-                .then((res) => {
-                    alert('Removed succesfully.');
-                    window.location.reload();
-                })
-                .catch((err) => {
-                    console.log(err.message);
-                });
+            try {
+                const resp = await axios.get(
+                    // 'http://localhost:8080/comments',
+                    'http://localhost:8000/post/delete/' + id,
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                    }
+                );
+                fetchData();
+                console.log(data);
+                console.log(resp);
+            } catch (err) {
+                let status = err.response?.status;
+                console.log(status);
+                console.log(err);
+            }
+        }
+    };
+
+    const RemoveComment = async (id) => {
+        if (window.confirm('Do you want to remove')) {
+            try {
+                const resp = await axios.get(
+                    'http://localhost:8000/comment/deleteAll/' + id,
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                    }
+                );
+                console.log(resp);
+            } catch (err) {
+                let status = err.response?.status;
+                console.log(status);
+                console.log(err);
+            }
         }
     };
 
     const fetchData = async () => {
-        const { data } = await axios.get('http://localhost:8080/posts');
+        const { data } = await axios.get('http://localhost:8000/post');
+        console.log(data);
         setData(data);
     };
     useEffect(() => {
@@ -39,53 +75,85 @@ const AdminPage = () => {
     }, []);
     return (
         <>
-            <Link to="/write">
-                <button>Add new</button>
-            </Link>
-
-            <table>
-                <thead>
-                    <tr>
-                        <td>
-                            <h1>id</h1>
-                        </td>
-                        <td>
-                            <h1>title</h1>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data &&
-                        data.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.title}</td>
-                                <td>
-                                    <button
-                                        onClick={() => {
-                                            LoadEdit(item.id);
+            <Responsive>
+                <br />
+                <br />
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 500 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>PostID</TableCell>
+                                <TableCell align="right">Title</TableCell>
+                                <TableCell align="right">글 보러가기</TableCell>
+                                <TableCell align="right">글 삭제하기</TableCell>
+                                <TableCell align="right">글 수정하기</TableCell>
+                                <TableCell align="right">댓글 비우기</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {data &&
+                                data.map((item) => (
+                                    <TableRow
+                                        key={item.postId}
+                                        sx={{
+                                            '&:last-child td, &:last-child th':
+                                                {
+                                                    border: 0,
+                                                },
                                         }}
                                     >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            RemoveFunction(item.id);
-                                        }}
-                                    >
-                                        Remove
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            LoadDetail(item.id);
-                                        }}
-                                    >
-                                        Details
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                </tbody>
-            </table>
+                                        <TableCell component="th" scope="row">
+                                            {item.postId}
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            {item.title}
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            onClick={() => {
+                                                LoadDetail(item.postId);
+                                            }}
+                                        >
+                                            <Button variant="outlined">
+                                                조회
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            onClick={() => {
+                                                RemoveFunction(item.postId);
+                                            }}
+                                        >
+                                            <Button variant="outlined">
+                                                삭제
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            onClick={() => {
+                                                LoadEdit(item.postId);
+                                            }}
+                                        >
+                                            <Button variant="outlined">
+                                                수정
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell
+                                            align="right"
+                                            onClick={() => {
+                                                RemoveComment(item.postId);
+                                            }}
+                                        >
+                                            <Button variant="outlined">
+                                                댓글삭제
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Responsive>
         </>
     );
 };

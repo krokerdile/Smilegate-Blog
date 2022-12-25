@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
+import styled from 'styled-components';
+import { TextField } from '@mui/material';
+import moment from 'moment';
+import Responsive from '../components/Responsive';
+import Button from '@mui/material/Button';
 const CreatePost = () => {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
@@ -15,7 +19,9 @@ const CreatePost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const data = { title: title, body: body };
+        const nowTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        console.log(nowTime);
+        const data = { title: title, body: body, time: nowTime };
         console.log(data);
         try {
             // const resp = await axios.post('http://localhost:8080/posts', data, {
@@ -53,28 +59,43 @@ const CreatePost = () => {
         }
     };
     return (
-        <div>
-            <h1>createPost</h1>
+        <Responsive>
             <div>
-                <h2>글 쓰기</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>Title</label>
-                    <input
-                        required
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    ></input>
-                    <label>Body</label>
-                    <input
-                        required
-                        value={body}
-                        onChange={(e) => setBody(e.target.value)}
-                    ></input>
-                    <button type="submit">Save</button>
-                </form>
-                <Link to="/">Back</Link>
+                <h1>글 작성하기</h1>
+                <div>
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            fullWidth
+                            id="outlined-multiline-static"
+                            label="제목"
+                            multiline
+                            rows={2}
+                            required
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                        <br />
+                        <br />
+                        <TextField
+                            fullWidth
+                            id="outlined-multiline-static"
+                            label="내용"
+                            multiline
+                            rows={6}
+                            required
+                            value={body}
+                            onChange={(e) => setBody(e.target.value)}
+                        />
+
+                        <br />
+                        <br />
+                        <Button variant="contained" type="submit">
+                            저장하기
+                        </Button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </Responsive>
     );
 };
 

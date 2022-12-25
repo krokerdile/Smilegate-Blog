@@ -1,19 +1,17 @@
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import AdminPage from './pages/AdminPage';
 import Detail from './components/PostDetail';
 import EditPost from './pages/EditPost';
 import CreatePost from './pages/CreatePost';
 import PostList from './pages/PostList';
-import Header from './components/Header';
-import Layout from './components/Layout';
+import Nav from './components/Nav';
 
 function App() {
     return (
         <div className="App">
-            <h1>SmileGate BlogProject</h1>
-
+            <Nav />
             <Routes>
                 <Route path="/" element={<MainPage />} />
                 <Route path="/admin" element={<AdminPage />} />

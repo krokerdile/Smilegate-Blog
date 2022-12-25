@@ -1,24 +1,27 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 
+import Responsive from './Responsive';
+
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import { Stack } from '@mui/system';
+import { createTheme } from '@mui/material/styles';
 const Comment = (props) => {
     const [data, setData] = useState(null);
     const [comment, setComment] = useState('');
     const navigate = useNavigate();
     const RemoveFunction = async (e) => {
         console.log(e);
-        if (window.confirm('Do you want to remove')) {
-            // fetch('http://localhost:8080/comments/' + id, {
-            //     method: 'DELETE',
-            // })
-            //     .then((res) => {
-            //         alert('Removed succesfully.');
-            //         window.location.reload();
-            //     })
-            //     .catch((err) => {
-            //         console.log(err.message);
-            //     });
+        if (window.confirm('댓글 삭제하시겠습니까?')) {
             try {
                 const resp = await axios.get(
                     // 'http://localhost:8080/comments',
@@ -45,6 +48,7 @@ const Comment = (props) => {
         );
         // console.log(data);
         setData(data);
+        console.log(data);
     };
     useEffect(() => {
         fetchData();
@@ -73,48 +77,84 @@ const Comment = (props) => {
         }
     };
     return (
-        <>
+        <Wrapper>
             {/* <Link to="/write">
                 <button>Add new</button>
             </Link> */}
 
+            <h3>댓글</h3>
             <table>
                 <thead>
                     <tr>
                         <td>
-                            <h1>Comment</h1>
-                            <form onSubmit={handleSubmit}>
-                                <label>Title</label>
-                                <label>Body</label>
-                                <input
+                            <form
+                                className="commentForm"
+                                onSubmit={handleSubmit}
+                            >
+                                <TextField
+                                    className="commentField"
+                                    fullWidth
+                                    id="outlined-multiline-static"
+                                    label="댓글 작성"
+                                    multiline
+                                    rows={1}
                                     required
                                     value={comment}
                                     onChange={(e) => setComment(e.target.value)}
-                                ></input>
-                                <button type="submit">Save</button>
+                                />
+                                <br />
+                                <br />
+                                <Button variant="contained" type="submit">
+                                    댓글 등록하기
+                                </Button>
                             </form>
                         </td>
                     </tr>
                 </thead>
+                <br />
+                <br />
                 <tbody>
                     {data &&
                         data.map((item) => (
                             <tr key={item.commentId}>
-                                <td>{item.body}</td>
                                 <td>
-                                    <button
-                                        onClick={RemoveFunction}
-                                        id={item.commentId}
+                                    <Card
+                                        variant="outlined"
+                                        sx={{ minWidth: 275 }}
                                     >
-                                        Remove
-                                    </button>
+                                        <CardContent>
+                                            <Typography variant="body2">
+                                                {item.body}
+                                            </Typography>
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button
+                                                onClick={RemoveFunction}
+                                                id={item.commentId}
+                                            >
+                                                Remove
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
                                 </td>
                             </tr>
                         ))}
                 </tbody>
             </table>
-        </>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    .table {
+        width: 100%;
+    }
+    .commentForm {
+        width: 100%;
+    }
+    .commentField {
+        width: 960px;
+    }
+`;
 
 export default Comment;

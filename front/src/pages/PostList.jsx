@@ -130,7 +130,7 @@ const PostList = () => {
                                     }}
                                 >
                                     <TableCell component="th" scope="row">
-                                        {item.title}
+                                        {item.postId}
                                     </TableCell>
                                     <TableCell align="right">
                                         {item.title}

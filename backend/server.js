@@ -105,7 +105,7 @@ app.get('/comment/deleteAll/:no', (req, res) => {
 //특정 게시물의 댓글 가져오기
 app.get('/comment/:no', (req, res) => {
     db.query(
-        `SELECT * from comment where postId=${req.params.no}`,
+        `SELECT * FROM comment where postId=${req.params.no}`,
         (error, rows) => {
             if (error) console.log(error);
             console.log('Post: ', rows);
@@ -116,7 +116,7 @@ app.get('/comment/:no', (req, res) => {
 //특정 게시물의 댓글 달기
 app.post('/commentcreate', (req, res) => {
     db.query(
-        `insert into comment(body,postId) values("${req.body.body}",${req.body.postId})`,
+        `INSERT INTO comment(body,postId) values("${req.body.body}",${req.body.postId})`,
         (error, rows) => {
             if (error) console.log(error);
             console.log('edit: ', rows);
